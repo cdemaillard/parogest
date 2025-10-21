@@ -16,6 +16,14 @@ from app.schemas.users import (
   UserResponse,
   UserUpdate
 )
+from app.schemas.exepenses import(
+  ExpenseBase,
+  ExpenseCreate,
+  ExpenseUpdate,
+  ExpenseResponse,
+  ExpenseDetailResponse,
+  ExpenseStatus
+)
 from app.schemas.pagination import PaginationParams, PaginatedResponse
 
 __all__ = [
@@ -31,6 +39,12 @@ __all__ = [
   "UserCreate",
   "UserResponse",
   "UserUpdate",
+  "ExpenseBase",
+  "ExpenseCreate",
+  "ExpenseUpdate",
+  "ExpenseResponse",
+  "ExpenseDetailResponse",
+  "ExpenseStatus",
   "PaginationParams",
   "PaginatedResponse"
 ]
