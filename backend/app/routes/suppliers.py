@@ -1,7 +1,7 @@
 from fastapi import APIRouter, Depends, HTTPException, status, Query
 from sqlalchemy.orm import Session
 from sqlalchemy.exc import IntegrityError
-from typing import List
+from typing import List, Optional
 
 from app.database import get_db
 from app.models import Supplier
@@ -53,17 +53,43 @@ def create_supplier(supplier: SupplierCreate, db: Session = Depends(get_db)):
 def get_suppliers(
   page: int = Query(1, ge=1, description="Page's number"),
   page_size: int = Query(20, ge=1, le=100, description="Number of items per page"),
+  search: Optional[str] = Query(None, description="Rechercher par nom, email ou SIRET"),
+  name: Optional[str] = Query(None, description="Filtrer par nom (contient)"),
+  email: Optional[str] = Query(None, description="Filtrer par email (contient)"),
+  siret: Optional[str] = Query(None, description="Filtrer par SIRET (exact)"),
   db: Session = Depends(get_db)
 ):
   
   # Paramètres de pagination
   pagination = PaginationParams(page=page, page_size=page_size)
   
-  # Compter le total
-  total = db.query(Supplier).count()
+  # Construire la requête de base
+  query = db.query(Supplier)
+  
+  # Appliquer les filtres
+  if search:
+    # Recherche globale (nom OU email OU siret)
+    search_filter = f"%{search}%"
+    query = query.filter(
+      (Supplier.name.ilike(search_filter)) |
+      (Supplier.email.ilike(search_filter)) |
+      (Supplier.siret.ilike(search_filter))
+    )
+  
+  if name:
+    query = query.filter(Supplier.name.ilike(f"%{name}%"))
+  
+  if email:
+    query = query.filter(Supplier.email.ilike(f"%{email}%"))
+  
+  if siret:
+    query = query.filter(Supplier.siret == siret)
+  
+  # Compter le total après filtres
+  total = query.count()
   
   # Récupérer les éélments paginés
-  suppliers = db.query(Supplier)\
+  suppliers = query\
     .offset(pagination.skip)\
     .limit(pagination.limit)\
     .all()
