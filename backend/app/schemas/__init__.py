@@ -10,6 +10,12 @@ from app.schemas.category import(
   CategoryUpdate,
   CategoryResponse
 )
+from app.schemas.users import (
+  UserBase,
+  UserCreate,
+  UserResponse,
+  UserUpdate
+)
 from app.schemas.pagination import PaginationParams, PaginatedResponse
 
 __all__ = [
@@ -20,7 +26,11 @@ __all__ = [
   "CategoryBase",
   "CategoryCreate",
   "CategoryUpdate",
-  "CategoryResponse"
+  "CategoryResponse",
+  "UserBase",
+  "UserCreate",
+  "UserResponse",
+  "UserUpdate",
   "PaginationParams",
   "PaginatedResponse"
 ]

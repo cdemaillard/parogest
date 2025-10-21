@@ -78,3 +78,26 @@ Satisfait ! Premier serveur API qui tourne. Swagger impressionnant.
 ### 😊 Ressenti
 
 Galère Docker mais résolu ! Modèle créé, migration appliquée. Prêt pour les endpoints !
+
+## Session 4 - Modèle Category (21 octobre 2025)
+
+### ✅ Objectifs atteints
+
+- Création du modèle `Category` avec colonnes : id, name, code, description, is_active, created_at, updated_at
+- Schémas Pydantic créés (CategoryBase, CategoryCreate, CategoryUpdate, CategoryResponse)
+- Migration Alembic générée et appliquée (table `categories` créée)
+- Router `/api/categories` implémenté avec CRUD complet
+- Pagination et filtres (search, name, code, is_active)
+- Tests réussis sur tous les endpoints
+
+### 🐛 Bug résolu
+
+- Fix du schéma `CategoryUpdate` : ajout de `default=None` pour permettre les mises à jour partielles
+
+### 📦 Commit
+
+- `feat: add Category model with full CRUD`
+
+### 🎯 Prochaine session
+
+- Session 5 : Modèle `User` (utilisateurs et rôles)
