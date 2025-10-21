@@ -170,12 +170,12 @@ def get_expenses(
     enriched_expenses.append(expense_dict)
     
     # Créer la réponse paginée
-    return PaginatedResponse.create(
-      items=enriched_expenses,
-      total=total,
-      page=page,
-      page_size=page_size
-    )
+  return PaginatedResponse.create(
+    items=enriched_expenses,
+    total=total,
+    page=page,
+    page_size=page_size
+  )
 
 # READ ONE - Récupérer une dépense par ID
 @router.get("/{expense_id}", response_model=ExpenseDetailResponse)
