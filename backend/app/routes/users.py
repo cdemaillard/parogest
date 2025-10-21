@@ -80,7 +80,7 @@ def get_users(
     )
   
   if email:
-    query = query.filter(User.email.ilike(f"%{email}‰"))
+    query = query.filter(User.email.ilike(f"%{email}%"))
   
   if role:
         query = query.filter(User.role == role)

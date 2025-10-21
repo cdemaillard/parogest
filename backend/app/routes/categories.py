@@ -78,7 +78,7 @@ def get_categories(
     )
   
   if name:
-    query = query.filter(Category.name.ilike(f"‰{name}‰"))
+    query = query.filter(Category.name.ilike(f"%{name}%"))
   if code:
     query = query.filter(Category.code == code)
   if is_active is not None:
