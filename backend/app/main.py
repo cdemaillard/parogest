@@ -1,6 +1,6 @@
 from fastapi import FastAPI
 from datetime import datetime
-from app.routes import suppliers, categories, users
+from app.routes import suppliers, categories, users, expenses
 
 app = FastAPI(
   title="ParoGest API",
@@ -11,7 +11,7 @@ app = FastAPI(
 app.include_router(suppliers.router)
 app.include_router(categories.router)
 app.include_router(users.router)
-
+app.include_router(expenses.router)
 
 @app.get("/")
 def root():

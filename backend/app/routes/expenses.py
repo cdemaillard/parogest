@@ -12,7 +12,6 @@ from app.models.supplier import Supplier
 from app.schemas import (
     ExpenseCreate,
     ExpenseUpdate,
-    ExpenseApproval,
     ExpenseResponse,
     ExpenseDetailResponse,
     PaginationParams,
@@ -109,8 +108,7 @@ def get_expenses(
   query = db.query(Expense).options(
     joinedload(Expense.user),
     joinedload(Expense.category),
-    joinedload(Expense.supplier),
-    joinedload(Expense.approved_by)
+    joinedload(Expense.supplier)
   )
   
   # Appliquer les filtres
@@ -127,7 +125,7 @@ def get_expenses(
     query = query.filter(Expense.status == status)
   
   if min_amount:
-    query = query.filter(Expense.amout >= min_amount)
+    query = query.filter(Expense.amount >= min_amount)
     
   if max_amount:
     query = query.filter(Expense.amount <= max_amount)
@@ -160,8 +158,6 @@ def get_expenses(
       "user_id": expense.user_id,
       "category_id": expense.category_id,
       "supplier_id": expense.supplier_id,
-      "approved_by_id": expense.approved_by_id,
-      "approved_at": expense.approved_at,
       "created_at": expense.created_at,
       "updated_at": expense.updated_at,
       # Informations enrichies
@@ -169,9 +165,7 @@ def get_expenses(
       "user_name": expense.user.full_name if expense.user else None,
       "category_name": expense.category.name if expense.category else None,
       "category_code": expense.category.code if expense.category else None,
-      "supplier_name": expense.supplier.name if expense.supplier else None,
-      "approved_by_email": expense.approved_by.email if expense.approved_by else None,
-      "approved_by_name": expense.approved_by.name if expense.approved_by else None,
+      "supplier_name": expense.supplier.name if expense.supplier else None
     }
     enriched_expenses.append(expense_dict)
     
@@ -192,8 +186,7 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
   expense = db.query(Expense).options(
     joinedload(Expense.user),
     joinedload(Expense.category),
-    joinedload(Expense.supplier),
-    joinedload(Expense.approved_by)
+    joinedload(Expense.supplier)
   ).filter(Expense.id == expense_id).first()
   
   if not expense:
@@ -212,8 +205,6 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
     "user_id": expense.user_id,
     "category_id": expense.category_id,
     "supplier_id": expense.supplier_id,
-    "approved_by_id": expense.approved_by_id,
-    "approved_at": expense.approved_at,
     "created_at": expense.created_at,
     "updated_at": expense.updated_at,
     # Informations enrichies
@@ -221,9 +212,7 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
     "user_name": expense.user.full_name if expense.user else None,
     "category_name": expense.category.name if expense.category else None,
     "category_code": expense.category.code if expense.category else None,
-    "supplier_name": expense.supplier.name if expense.supplier else None,
-    "approved_by_email": expense.approved_by.email if expense.approved_by else None,
-    "approved_by_name": expense.approved_by.name if expense.approved_by else None,
+    "supplier_name": expense.supplier.name if expense.supplier else None
   }
   
   return expense_dict
@@ -248,7 +237,7 @@ def update_expense(
       )
     
     # Check status
-    if not db_expense.status != ExpenseStatus.PENDING:
+    if db_expense.status != ExpenseStatus.PENDING:
       raise HTTPException(
           status_code=status.HTTP_400_BAD_REQUEST,
           detail=f"Only PENDING expenses can be modified"
@@ -263,7 +252,7 @@ def update_expense(
       if not category:
         raise HTTPException(
           status_code=status.HTTP_404_NOT_FOUND,
-          detail=f"Category with id {update_data["category_id"]} not found"
+          detail=f"Category with id {update_data['category_id']} not found"
         )
     
     # Vérifier que le fournisseur existe si fourni
@@ -272,7 +261,7 @@ def update_expense(
       if not supplier:
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Supplier with id {update_data["supplier_id"]} not found"
+        detail=f"Supplier with id {update_data['supplier_id']} not found"
       )
     
     # Appliquer les modifications
@@ -289,5 +278,3 @@ def update_expense(
         status_code=status.HTTP_400_BAD_REQUEST,
         detail=f"Database integrity error: {str(e)}"
     )
-
-# APPROVE/

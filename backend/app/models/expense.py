@@ -37,7 +37,7 @@ class Expense(Base):
   # Relation ORM (pour accéder facilement aux objets liés)
   user = relationship("User", foreign_keys=[user_id], backref="expenses")
   category = relationship("Category", backref="expenses")
-  supplier = relationship("Suuplier", backref="expenses")
+  supplier = relationship("Supplier", backref="expenses")
   
   def __repr__(self):
     """
