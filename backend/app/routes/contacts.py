@@ -164,7 +164,7 @@ def update_contact(
   
   except IntegrityError as e:
     db.rollback()
-    if "suppliers_email_key" in str(e):
+    if "contacts_email_key" in str(e):
       raise DuplicateEmailException(update_data.get("email", "unknown"))
     raise HTTPException(
       status_code=status.HTTP_400_BAD_REQUEST,

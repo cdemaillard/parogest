@@ -8,7 +8,7 @@ from app.database import get_db
 from app.models.expense import Expense
 from app.models.user import User
 from app.models.category import Category
-from app.models.supplier import Supplier
+from app.models.contact import Contact
 from app.schemas import (
     ExpenseCreate,
     ExpenseUpdate,
@@ -55,12 +55,12 @@ def create_expense(
       )
     
     # Vérifier que le fournisseur existe si fourni
-    if expense.supplier_id:
-      supplier = db.query(Supplier).filter(Supplier.id == expense.supplier_id).first()
-      if not supplier:
+    if expense.contact_id:
+      contact = db.query(Contact).filter(Contact.id == expense.contact_id).first()
+      if not contact:
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Supplier with id {expense.supplier_id} not found"
+        detail=f"Contact with id {expense.contact_id} not found"
       )
     
     # Créer la dépense
@@ -88,7 +88,7 @@ def get_expenses(
   page_size: int = Query(20, ge=1, le=100, description="Number of items per page"),
   user_id: Optional[int] = Query(None, description="Filtrer par utilisateur"),
   category_id: Optional[int] = Query(None, description="Filtrer par catégorie"),
-  supplier_id: Optional[int] = Query(None, description="Filtrer par fournisseur"),
+  contact_id: Optional[int] = Query(None, description="Filtrer par fournisseur"),
   status: Optional[ExpenseStatus] = Query(None, description="Filtrer par statut"),
   min_amount: Optional[float] = Query(None, description="Montant minimum"),
   max_amount: Optional[float] = Query(None, description="Montant maximum"),
@@ -108,7 +108,7 @@ def get_expenses(
   query = db.query(Expense).options(
     joinedload(Expense.user),
     joinedload(Expense.category),
-    joinedload(Expense.supplier)
+    joinedload(Expense.contact)
   )
   
   # Appliquer les filtres
@@ -118,8 +118,8 @@ def get_expenses(
   if category_id:
     query = query.filter(Expense.category_id == category_id)
   
-  if supplier_id:
-    query = query.filter(Expense.supplier_id == supplier_id)
+  if contact_id:
+    query = query.filter(Expense.contact_id == contact_id)
   
   if status:
     query = query.filter(Expense.status == status)
@@ -157,7 +157,7 @@ def get_expenses(
       "status": expense.status,
       "user_id": expense.user_id,
       "category_id": expense.category_id,
-      "supplier_id": expense.supplier_id,
+      "contact_id": expense.contact_id,
       "created_at": expense.created_at,
       "updated_at": expense.updated_at,
       # Informations enrichies
@@ -165,7 +165,7 @@ def get_expenses(
       "user_name": expense.user.full_name if expense.user else None,
       "category_name": expense.category.name if expense.category else None,
       "category_code": expense.category.code if expense.category else None,
-      "supplier_name": expense.supplier.name if expense.supplier else None
+      "contact_name": expense.contact.name if expense.contact else None
     }
     enriched_expenses.append(expense_dict)
     
@@ -186,7 +186,7 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
   expense = db.query(Expense).options(
     joinedload(Expense.user),
     joinedload(Expense.category),
-    joinedload(Expense.supplier)
+    joinedload(Expense.contact)
   ).filter(Expense.id == expense_id).first()
   
   if not expense:
@@ -204,7 +204,7 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
     "status": expense.status,
     "user_id": expense.user_id,
     "category_id": expense.category_id,
-    "supplier_id": expense.supplier_id,
+    "contact_id": expense.contact_id,
     "created_at": expense.created_at,
     "updated_at": expense.updated_at,
     # Informations enrichies
@@ -212,7 +212,7 @@ def get_expense(expense_id: int, db: Session = Depends(get_db)):
     "user_name": expense.user.full_name if expense.user else None,
     "category_name": expense.category.name if expense.category else None,
     "category_code": expense.category.code if expense.category else None,
-    "supplier_name": expense.supplier.name if expense.supplier else None
+    "contact_name": expense.contact.name if expense.contact else None
   }
   
   return expense_dict
@@ -256,12 +256,12 @@ def update_expense(
         )
     
     # Vérifier que le fournisseur existe si fourni
-    if "supplier_id" in update_data and update_data["supplier_id"]:
-      supplier = db.query(Supplier).filter(Supplier.id == update_data["supplier_id"]).first()
-      if not supplier:
+    if "contact_id" in update_data and update_data["contact_id"]:
+      contact = db.query(Contact).filter(Contact.id == update_data["contact_id"]).first()
+      if not contact:
         raise HTTPException(
         status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Supplier with id {update_data['supplier_id']} not found"
+        detail=f"Contact with id {update_data['contact_id']} not found"
       )
     
     # Appliquer les modifications

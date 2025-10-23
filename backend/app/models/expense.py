@@ -28,7 +28,7 @@ class Expense(Base):
   # Utilisateur qui a soumis la démense
   user_id = Column(Integer, ForeignKey('users.id'), nullable=False, index=True)
   category_id = Column(Integer, ForeignKey('categories.id'), nullable=False, index=True)
-  supplier_id = Column(Integer, ForeignKey('suppliers.id'), nullable=True, index=True)
+  contact_id = Column(Integer, ForeignKey('contacts.id'), nullable=True, index=True)
   
   # Timestamps
   created_at = Column(DateTime(timezone=True), server_default=func.now(), nullable=False)
@@ -37,7 +37,7 @@ class Expense(Base):
   # Relation ORM (pour accéder facilement aux objets liés)
   user = relationship("User", foreign_keys=[user_id], backref="expenses")
   category = relationship("Category", backref="expenses")
-  supplier = relationship("Supplier", backref="expenses")
+  contact = relationship("Contact", backref="expenses")
   
   def __repr__(self):
     """

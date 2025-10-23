@@ -22,11 +22,7 @@ class Contact(Base):
   id = Column(Integer, primary_key=True, index=True)
   
   # === Type de contact (OBLIGATOIRE)
-  contact_type = Column(
-    SQLEnum(ContactType, name='contacttype', native_enum=True, create_type=False),
-    nullable=False,
-    index=True
-  )
+  contact_type = Column(SQLEnum(ContactType), nullable=False, index=True)
   
   # == Informations de base ===
   is_company = Column(Boolean, default=False, nullable=False)

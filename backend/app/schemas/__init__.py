@@ -1,9 +1,3 @@
-from app.schemas.suppliers import (
-    SupplierBase,
-    SupplierCreate,
-    SupplierUpdate,
-    SupplierResponse
-)
 from app.schemas.contacts import (
     ContactBase,
     ContactCreate,
@@ -32,11 +26,6 @@ from app.schemas.expenses import(
 from app.schemas.pagination import PaginationParams, PaginatedResponse
 
 __all__ = [
-    # Suppliers (ancien - à supprimer après migration)
-    "SupplierBase",
-    "SupplierCreate",
-    "SupplierUpdate",
-    "SupplierResponse",
     # Contacts (nouveau)
     "ContactBase",
     "ContactCreate",

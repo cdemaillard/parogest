@@ -1,14 +1,5 @@
 from fastapi import HTTPException, status
 
-# === Exceptions SUPPLIER (ancien - à supprimer après migration) ===
-class SupplierNotFoundException(HTTPException):
-  def __init__(self, supplier_id: int):
-    super().__init__(
-        status_code=status.HTTP_404_NOT_FOUND,
-        detail=f"Supplier with id {supplier_id} not found"
-    )
-
-
 # === Exceptions CONTACT (nouveau) ===
 class ContactNotFoundException(HTTPException):
   def __init__(self, contact_id: int):

@@ -10,7 +10,7 @@ class ExpenseBase(BaseModel):
   description: str = Field(..., min_length=1, max_length=500, description="Description de la dépense")
   expense_date: date = Field(..., description="Date de la dépense")
   category_id: int = Field(..., gt=0, description="ID de la catégorie")
-  supplier_id: int = Field(None, gt=0, description="ID du fournisseur (optionnel)" )
+  contact_id: int = Field(None, gt=0, description="ID du fournisseur (optionnel)" )
   
   @field_validator('amount')
   @classmethod
@@ -35,7 +35,7 @@ class ExpenseUpdate(BaseModel):
   description: Optional[str] = Field(None, min_length=1, max_length=500)
   expense_date: Optional[date] = None
   category_id: Optional[int] = Field(None, gt=0)
-  supplier_id: Optional[int] = Field(None, gt=0)
+  contact_id: Optional[int] = Field(None, gt=0)
   status: Optional[ExpenseStatus] = None
   
   @field_validator('amount')
@@ -57,7 +57,7 @@ class ExpenseResponse(BaseModel):
   # IDs des relations
   user_id: int
   category_id: int
-  supplier_id: Optional[int] = None
+  contact_id: Optional[int] = None
   
   # Timestamps
   created_at: datetime
@@ -81,4 +81,4 @@ class ExpenseDetailResponse(ExpenseResponse):
   category_code: Optional[str] = None
   
   # Informations du fournisseur
-  supplier_name: Optional[str] = None
+  contact_name: Optional[str] = None
