@@ -1,48 +1,64 @@
 from app.schemas.suppliers import (
-  SupplierBase,
-  SupplierCreate,
-  SupplierUpdate,
-  SupplierResponse
+    SupplierBase,
+    SupplierCreate,
+    SupplierUpdate,
+    SupplierResponse
+)
+from app.schemas.contacts import (
+    ContactBase,
+    ContactCreate,
+    ContactUpdate,
+    ContactResponse
 )
 from app.schemas.category import(
-  CategoryBase,
-  CategoryCreate,
-  CategoryUpdate,
-  CategoryResponse
+    CategoryBase,
+    CategoryCreate,
+    CategoryUpdate,
+    CategoryResponse
 )
 from app.schemas.users import (
-  UserBase,
-  UserCreate,
-  UserResponse,
-  UserUpdate
+    UserBase,
+    UserCreate,
+    UserResponse,
+    UserUpdate
 )
 from app.schemas.expenses import(
-  ExpenseBase,
-  ExpenseCreate,
-  ExpenseUpdate,
-  ExpenseResponse,
-  ExpenseDetailResponse,
+    ExpenseBase,
+    ExpenseCreate,
+    ExpenseUpdate,
+    ExpenseResponse,
+    ExpenseDetailResponse,
 )
 from app.schemas.pagination import PaginationParams, PaginatedResponse
 
 __all__ = [
-  "SupplierBase",
-  "SupplierCreate",
-  "SupplierUpdate",
-  "SupplierResponse",
-  "CategoryBase",
-  "CategoryCreate",
-  "CategoryUpdate",
-  "CategoryResponse",
-  "UserBase",
-  "UserCreate",
-  "UserResponse",
-  "UserUpdate",
-  "ExpenseBase",
-  "ExpenseCreate",
-  "ExpenseUpdate",
-  "ExpenseResponse",
-  "ExpenseDetailResponse",
-  "PaginationParams",
-  "PaginatedResponse"
+    # Suppliers (ancien - à supprimer après migration)
+    "SupplierBase",
+    "SupplierCreate",
+    "SupplierUpdate",
+    "SupplierResponse",
+    # Contacts (nouveau)
+    "ContactBase",
+    "ContactCreate",
+    "ContactUpdate",
+    "ContactResponse",
+    # Categories
+    "CategoryBase",
+    "CategoryCreate",
+    "CategoryUpdate",
+    "CategoryResponse",
+    # Users
+    "UserBase",
+    "UserCreate",
+    "UserResponse",
+    "UserUpdate",
+    # Expenses
+    "ExpenseBase",
+    "ExpenseCreate",
+    "ExpenseUpdate",
+    "ExpenseResponse",
+    "ExpenseDetailResponse",
+    # Pagination
+    "PaginationParams",
+    "PaginatedResponse"
 ]
