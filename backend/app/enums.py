@@ -46,3 +46,12 @@ class ContactType(str, Enum):
     
     def __str__(self):
         return self.value
+    
+    # AJOUT CRITIQUE : Force Pydantic à utiliser la valeur, pas le nom
+    @classmethod
+    def __get_pydantic_core_schema__(cls, source_type, handler):
+        from pydantic_core import core_schema
+        return core_schema.no_info_after_validator_function(
+            cls,
+            core_schema.str_schema(),
+        )
